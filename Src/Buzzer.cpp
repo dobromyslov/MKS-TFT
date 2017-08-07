@@ -7,13 +7,13 @@
  * The backlight control is included in this module because it also uses PWM. Output PWMH1 (aka PB1 peripheral A) drives the backlight pin.
  */
 
+#include "Buzzer.h"
 #include <cstring>
 
 #include "ecv.h"
 #include "stm32f1xx_hal.h"
 #include "cmsis_os.h"
 
-#include "Buzzer.h"
 
 TimerHandle_t xBuzzerTimer;
 extern TIM_HandleTypeDef htim2;

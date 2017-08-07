@@ -8,7 +8,7 @@
 #include "ecv.h"
 #include "Misc.h"
 
-#include <cstring>
+//#include <cstring>
 #include <cstdlib>
 
 // Safe version of strncpy that ensures that the destination is always null-terminated on return

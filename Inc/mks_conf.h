@@ -36,8 +36,10 @@
 
 #include "ecv.h"
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_spi.h"
 #include "cmsis_os.h"
 #include "fatfs.h"
+
 
 #if defined(STM32F107xC) && defined(MKS_TFT)
 /**

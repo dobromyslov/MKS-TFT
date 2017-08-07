@@ -13,6 +13,7 @@
 #include "RequestTimer.h"
 #include "PrinterStatus.h"
 #include "UserInterface.h"
+#include "eeprom.h"
 
 // Functions called from the serial I/O module
 extern void ProcessReceivedValue(const char id[], const char val[], int index);

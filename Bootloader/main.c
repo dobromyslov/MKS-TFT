@@ -31,9 +31,13 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
-#include "boot_conf.h"
+#include "mks_conf.h"
 
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_conf.h"
+#include "stm32f1xx_hal_spi.h"
+#include "stm32f1xx_hal_tim.h"
+#include "boot_conf.h"
 #include "fatfs.h"
 
 #if defined(STM32F107xC) && defined(MKS_TFT)
@@ -64,11 +68,6 @@ void Error_Handler(void);
 
 static void MX_GPIO_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
-void osDelay(__IO uint32_t Delay)
-{
-    HAL_Delay(Delay);
-}
 
 inline void moveVectorTable(uint32_t Offset)
 {
