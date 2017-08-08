@@ -11,50 +11,11 @@ OD=arm-none-eabi-objdump
 
 BIN=$(CP) -O ihex 
 
-# Select the appropriate option for your device, the available options are listed below
-# with a description copied from stm32f10x.h
-# Make sure to set the startup code file to the right device family, too!
-#
-# STM32F10X_LD 		STM32F10X_LD: STM32 Low density devices
-# STM32F10X_LD_VL	STM32F10X_LD_VL: STM32 Low density Value Line devices
-# STM32F10X_MD		STM32F10X_MD: STM32 Medium density devices
-# STM32F10X_MD_VL	STM32F10X_MD_VL: STM32 Medium density Value Line devices 
-# STM32F10X_HD		STM32F10X_HD: STM32 High density devices
-# STM32F10X_HD_VL	STM32F10X_HD_VL: STM32 High density value line devices
-# STM32F10X_XL		STM32F10X_XL: STM32 XL-density devices
-# STM32F10X_CL		STM32F10X_CL: STM32 Connectivity line devices 
-#
-# - Low-density devices are STM32F101xx, STM32F102xx and STM32F103xx microcontrollers
-#   where the Flash memory density ranges between 16 and 32 Kbytes.
-# 
-# - Low-density value line devices are STM32F100xx microcontrollers where the Flash
-#   memory density ranges between 16 and 32 Kbytes.
-# 
-# - Medium-density devices are STM32F101xx, STM32F102xx and STM32F103xx microcontrollers
-#   where the Flash memory density ranges between 64 and 128 Kbytes.
-# 
-# - Medium-density value line devices are STM32F100xx microcontrollers where the 
-#   Flash memory density ranges between 64 and 128 Kbytes.   
-# 
-# - High-density devices are STM32F101xx and STM32F103xx microcontrollers where
-#   the Flash memory density ranges between 256 and 512 Kbytes.
-# 
-# - High-density value line devices are STM32F100xx microcontrollers where the 
-#   Flash memory density ranges between 256 and 512 Kbytes.   
-# 
-# - XL-density devices are STM32F101xx and STM32F103xx microcontrollers where
-#   the Flash memory density ranges between 512 and 1024 Kbytes.
-# 
-# - Connectivity line devices are STM32F105xx and STM32F107xx microcontrollers.
-#
-# HSE_VALUE sets the value of the HSE clock, 8MHz in this case 
-
-DEFS = -DUSE_STDPERIPH_DRIVER -DSTM32F10X_CL -DHSE_VALUE=8000000 -DSTM32F107xC -DMKS_TFT -DILI9325
-#STARTUP = 	../Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_cl.s 
+DEFS = -D__HEAP_SIZE=0x200 -D__STACK_SIZE=0x100 -DSTM32F107VC -DSTM32F10X_CL -DSTM32F107xC -DMKS_TFT -DILI9328  -MMD
 STARTUP = Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f107xc.s
 
 MCU = cortex-m3
-MCFLAGS = -mcpu=$(MCU) -mthumb -mlittle-endian -mthumb-interwork
+MCFLAGS = -mcpu=$(MCU) -mthumb
 
 STM32_INCLUDES = -IDrivers/STM32F1xx_HAL_Driver/Inc/ \
 		 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include/ \
@@ -71,14 +32,13 @@ STM32_INCLUDES = -IDrivers/STM32F1xx_HAL_Driver/Inc/ \
 
 OPTIMIZE       = -Os
 
-CFLAGS	= $(MCFLAGS)  $(OPTIMIZE)  $(DEFS) -I. -I./ $(STM32_INCLUDES)  -Wl,-T,STM32F107VC_FLASH.ld
-AFLAGS	= $(MCFLAGS) 
+CFLAGS	= $(MCFLAGS)  $(OPTIMIZE)  $(DEFS) -fno-exceptions -funroll-loops -fdata-sections -ffunction-sections -g3 $(STM32_INCLUDES)  -Wl,-T,STM32F107VC_FLASH.ld
+AFLAGS	= $(MCFLAGS)
 
 SRC =   Src/main.c \
 	Src/stm32f1xx_hal_msp.c \
 	Src/stm32f1xx_hal_timebase_TIM.c \
 	Src/stm32f1xx_it.c \
-	Src/system_stm32f1xx_4boot.c \
 	Src/usb_host.c \
 	Src/usbh_conf.c \
 	Src/usbh_diskio.c \
@@ -98,9 +58,7 @@ SRC =   Src/main.c \
 	Src/MessageLog.cpp \
 	Src/Print.cpp \
 	Src/Misc.cpp \
-	Src/RequestTimer.cpp \
-#	Src/sd_diskio.c \
-#	Src/bsp_driver_sd.c
+	Src/RequestTimer.cpp
 
 #SRC += 	Bootloader/flash.c \
 #Bootloader/main.c \
@@ -118,24 +76,24 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sram.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_fsmc.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
-#Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
+Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c
+#Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c \
+#Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_fsmc.c \
+#Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c \
+#Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sram.c \
 
 SRC += 	Fonts/glcd17x22.cpp \
-Fonts/glcd28x32.cpp \
 Icons/HomeIcons.cpp \
 Icons/KeyIcons.cpp \
 Icons/MiscIcons.cpp \
-Icons/NozzleIcons.cpp \
+Icons/NozzleIcons.cpp
+#Fonts/glcd28x32.cpp \
 
 SRC += 	Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc.c \
 Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_bot.c \
@@ -169,15 +127,16 @@ $(BINARY): $(EXECUTABLE)
 	$(CP) -O binary $(EXECUTABLE) $(BINARY)
 
 flash: $(BINARY)
-#	st-flash write $(BINARY) 0x08000000
-	stm32flash -w $(BINARY) -v -g 0x0 /dev/ttyUSB0
+	st-flash write $(BINARY) 0x08000000
+#	stm32flash -w $(BINARY) -v -g 0x0 /dev/ttyUSB0
 	
 $(EXECUTABLE): $(SRC) $(STARTUP)
-	$(CC) $(CFLAGS) $^ -lm -lc -lstdc++ -lgcc -lc -lnosys -o $@
+	$(CC) $(CFLAGS) $^ -lm -lstdc++ -lgcc -lc -lnosys -o $@
 
 clean:
-	rm -f Startup.lst  $(TARGET)  $(TARGET).lst $(OBJ) $(AUTOGEN)  $(TARGET).out  $(TARGET).hex  $(TARGET).map \
+	echo rm -f Startup.lst  $(TARGET)  $(TARGET).lst $(AUTOGEN)  $(TARGET).out  $(TARGET).hex  $(TARGET).map \
 	$(TARGET).dmp  $(EXECUTABLE)
+#	$(OBJ)
 
 # Последнюю строчку лучше добавить в make, в секцию executable:
 # $(EXECUTABLE): $(SRC) $(STARTUP)
