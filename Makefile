@@ -74,22 +74,7 @@ OPTIMIZE       = -Os
 CFLAGS	= $(MCFLAGS)  $(OPTIMIZE)  $(DEFS) -I. -I./ $(STM32_INCLUDES)  -Wl,-T,STM32F107VC_FLASH.ld
 AFLAGS	= $(MCFLAGS) 
 
-SRC =   Src/Buzzer.cpp \
-	Src/Display.cpp \
-	Src/eeprom.c \
-	Src/fatfs.c \
-	Src/FileManager.cpp \
-	Src/main.c \
-	Src/Mem.cpp \
-	Src/MessageLog.cpp \
-	Src/Misc.cpp \
-	Src/PanelDue.cpp \
-	Src/Print.cpp \
-	Src/RequestTimer.cpp \
-#	Src/sd_diskio.c \
-	Src/SerialIo.cpp \
-	Src/spiflash_w25q16dv.c \
-	Src/spisd_diskio.c \
+SRC =   Src/main.c \
 	Src/stm32f1xx_hal_msp.c \
 	Src/stm32f1xx_hal_timebase_TIM.c \
 	Src/stm32f1xx_it.c \
@@ -97,17 +82,31 @@ SRC =   Src/Buzzer.cpp \
 	Src/usb_host.c \
 	Src/usbh_conf.c \
 	Src/usbh_diskio.c \
+	Src/fatfs.c \
+	Src/spiflash_w25q16dv.c \
+	Src/spisd_diskio.c \
+	Src/Buzzer.cpp \
+	Src/PanelDue.cpp \
+	Src/Display.cpp \
+	Src/FileManager.cpp \
+	Src/SerialIo.cpp \
 	Src/UserInterface.cpp \
 	Src/UTFT.cpp \
 	Src/UTouch.cpp \
-	Src/bsp_driver_sd.c
+	Src/eeprom.c \
+	Src/Mem.cpp \
+	Src/MessageLog.cpp \
+	Src/Print.cpp \
+	Src/Misc.cpp \
+	Src/RequestTimer.cpp \
+#	Src/sd_diskio.c \
+#	Src/bsp_driver_sd.c
 
-SRC += 	Bootloader/flash.c \
-Bootloader/main.c \
-Bootloader/stm32f1xx_it.c \
+#SRC += 	Bootloader/flash.c \
+#Bootloader/main.c \
+#Bootloader/stm32f1xx_it.c \
 
-SRC += 	Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c \
+SRC += Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c \
@@ -123,12 +122,13 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sram.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_fsmc.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
+#Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c \
 
 SRC += 	Fonts/glcd17x22.cpp \
 Fonts/glcd28x32.cpp \
@@ -173,7 +173,7 @@ flash: $(BINARY)
 	stm32flash -w $(BINARY) -v -g 0x0 /dev/ttyUSB0
 	
 $(EXECUTABLE): $(SRC) $(STARTUP)
-	$(CC) $(CFLAGS) $^ -lm -lc -lnosys -o $@
+	$(CC) $(CFLAGS) $^ -lm -lc -lstdc++ -lgcc -lc -lnosys -o $@
 
 clean:
 	rm -f Startup.lst  $(TARGET)  $(TARGET).lst $(OBJ) $(AUTOGEN)  $(TARGET).out  $(TARGET).hex  $(TARGET).map \
