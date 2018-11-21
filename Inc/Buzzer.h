@@ -9,6 +9,9 @@
 #ifndef BUZZER_H_
 #define BUZZER_H_
 
+#include "mks_conf.h"
+#include "stm32f1xx_hal_tim.h"
+
 #ifdef __cplusplus
 
 namespace Buzzer

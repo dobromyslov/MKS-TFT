@@ -32,10 +32,10 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
-#include "cmsis_os.h"
-#include "fatfs.h"
-
+#include "stm32f1xx_hal_i2c.h"
+#include "stm32f1xx_hal_uart.h"
 #include "mks_conf.h"
+#include "cmsis_os.h"
 
 #if defined(STM32F107xC) && defined(MKS_TFT)
 # include "usb_host.h"

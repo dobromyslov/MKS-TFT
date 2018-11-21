@@ -36,7 +36,7 @@
 #include "bsp_driver_sd.h"
 
 /* Extern variables ---------------------------------------------------------*/ 
-  
+
 extern SD_HandleTypeDef hsd;
 extern HAL_SD_CardInfoTypedef SDCardInfo; 
 

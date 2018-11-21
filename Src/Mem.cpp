@@ -5,10 +5,10 @@
  *  Author: David
  */
 
+#include "Mem.h"
 #include "ecv.h"
 #include "stm32f1xx_hal.h"
 #include "cmsis_os.h"
-#include "Mem.h"
 
 //#include <new>
 //void* operator new(size_t objsize, std::nothrow_t dummy) {

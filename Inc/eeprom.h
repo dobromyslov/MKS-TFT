@@ -35,6 +35,7 @@
 #define __EEPROM_H
 
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_i2c.h"
 #include "cmsis_os.h"
 
 #define EEPROM_ADDRESS		0xA0	// A0 = A1 = A2 = 0

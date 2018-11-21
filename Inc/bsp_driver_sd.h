@@ -36,12 +36,15 @@
 #ifndef __STM32F1XX_SD_H
 #define __STM32F1XX_SD_H
 
+
 #ifdef __cplusplus
  extern "C" {
 #endif 
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_conf.h"
+#include "stm32f1xx_hal_sd.h"
 
 /* Exported constants --------------------------------------------------------*/ 
 

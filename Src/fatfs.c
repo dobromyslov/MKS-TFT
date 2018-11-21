@@ -31,8 +31,8 @@
   ******************************************************************************
   */
 
-#include "fatfs.h"
 #include "mks_conf.h"
+#include "fatfs.h"
 
 #if defined(STM32F107xC) && defined(MKS_TFT)
 char SPISD_Path[4];     /* USER logical drive path */
